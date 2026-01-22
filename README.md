@@ -113,3 +113,30 @@ Backend API (Node + Express)
 Database (MongoDB)
 ↓
 WhatsApp Notification Service
+
+---
+
+## Development Progress
+
+### Day 1 - January 22, 2026
+
+**LLD (Low Level Design) Architecture**
+
+Today we completed the Low Level Design architecture for our Digital Queue Management System. The design includes detailed flow diagrams for different user roles and system interactions.
+
+#### Design Components:
+
+**1. Patient Flow**
+![Patient Flow](./public/LLD/Patient%20Flow.png)
+
+**2. Receptionist Dashboard**
+![Receptionist Dashboard](./public/LLD/Receptionist%20Dashboard.png)
+
+**3. Staff/Doctor Dashboard**
+![Staff Doctor Dashboard](./public/LLD/Staff%20Doctor%20Dashboard.png)
+
+These designs showcase the complete user journey and interaction patterns for:
+- Patients receiving tokens and notifications
+- Receptionists managing token generation
+- Doctors/Staff managing the queue and calling next patients
+
