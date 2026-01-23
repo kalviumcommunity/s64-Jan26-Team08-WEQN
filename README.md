@@ -1,142 +1,142 @@
-# s64-Jan26-Team08-WEQN
+# Lightweight Digital Queue Management System
 
-# Lightweight Digital Queue System for Tier-2/3 Hospitals
+This project is a full-stack web application built to solve the problem of long physical queues in hospitals and clinics, especially in Tier-2 and Tier-3 cities. The system replaces physical queues with a token-based digital queue and notifies patients about their turn using WhatsApp alerts.
 
-A simple, low-cost, and scalable digital queue management system designed for hospitals and clinics in Tier-2 and Tier-3 cities.  
-The system replaces physical queues with a **token-based digital queue**, sending **real-time WhatsApp alerts** to patients about their turn — without requiring expensive hardware or infrastructure.
+This project is developed as part of Kalvium Simulated Work Sprint 1 using Next.js and modern full-stack practices.
 
 ---
 
 ## Problem Statement
 
-In Tier-2 and Tier-3 cities, hospitals and clinics still rely heavily on **physical queues** for medical appointments.  
-This results in:
-
-- Long waiting times for patients
-- Overcrowded waiting areas
-- Poor experience for elderly patients
-- Stress on hospital staff and doctors
-- No transparency on queue status
-- Expensive hospital management software being unaffordable
-
-Most small clinics lack the budget, technical staff, or infrastructure to adopt traditional digital appointment systems.
+Hospitals and clinics in Tier-2 and Tier-3 cities still depend on physical queues for managing patient appointments. This leads to long waiting times, overcrowding, inefficiency for doctors, and poor patient experience. Most small clinics cannot afford expensive hospital management software or additional infrastructure.
 
 ---
 
-## Our Solution
+## Solution Overview
 
-We propose a **lightweight digital queueing system** that works using:
+The proposed solution is a lightweight digital queue management system that allows hospitals to generate tokens for patients and manage queues digitally. Patients receive timely notifications about their turn, reducing unnecessary waiting and crowding.
 
--  Smartphones (no special hardware)
--  Token-based queue management
--  WhatsApp alerts for patients
--  Web-based dashboard for hospitals
-
-Patients receive a **token number** and get notified via **WhatsApp** when their turn is approaching, allowing them to wait comfortably instead of standing in physical queues.
+The system is designed to work with minimal infrastructure and basic internet connectivity.
 
 ---
 
-##  How the System Works (Flow)
+## Target Users
 
-### 1️ Token Generation
-
-- Patient scans a **QR code** at the hospital  
-  **OR**
-- Receptionist manually creates a token using the dashboard
-
-Each token contains:
-- Token Number
-- Doctor Name
-- Estimated Waiting Time
+Small hospitals and clinics  
+Doctors and hospital staff  
+Patients visiting outpatient departments  
 
 ---
 
-### 2️ Queue Management
-- Doctor or staff uses a **simple dashboard**
-- Clicks **"Next Patient"** after each consultation
-- Queue updates automatically in real time
+## Core Features
+
+Hospital staff authentication  
+Doctor management  
+Patient token generation  
+Live queue management  
+WhatsApp-based patient alerts  
+Admin and doctor dashboard  
 
 ---
 
-### 3️ WhatsApp Alerts
-Patients receive WhatsApp notifications like:
-- _"Your appointment is in 20 minutes"_
-- _"Please be ready, your turn is next"_
+## Technology Stack
 
-This ensures transparency and reduces unnecessary crowding.
-
----
-
-## Key Features
-
--  Token-based digital queue
--  WhatsApp notifications for patients
--  Mobile-friendly dashboard
--  No expensive hardware required
--  Works with low internet connectivity
--  Simple UI for non-technical staff
--  Supports multiple doctors & clinics
+Frontend: Next.js with App Router and TypeScript  
+Backend: Next.js API Routes  
+Database: PostgreSQL  
+ORM: Prisma  
+Caching: Redis  
+Containerization: Docker  
+CI CD: GitHub Actions  
+Deployment: AWS or Azure  
 
 ---
 
-## Tech Stack
+## Rendering Strategy Using Next.js App Router
 
-### Frontend
-- React.js (Mobile-first UI)
-- Tailwind CSS / CSS Modules
+This project uses all three rendering strategies provided by Next.js App Router to balance performance, scalability, and data freshness.
 
-### Backend
-- Node.js
-- Express.js
+### Static Rendering
 
-### Database
-- MongoDB
+Used for pages such as Home and About. These pages contain static content and are generated at build time for fast loading and better SEO.
 
-### Notifications
-- WhatsApp API (planned)
-- Mock notification service for MVP
+Implementation:
+```ts
+export const revalidate = false;
+```
 
-### Authentication
-- OTP-based login (phone number)
-- No passwords (staff-friendly)
+### Dynamic Rendering
 
----
+Used for pages that require real-time or frequently updated data, such as live queue status or patient appointments.
 
-## System Architecture
+Implementation:
+```ts
+export const dynamic = 'force-dynamic';
+```
 
-Patient / Reception
-↓
-Web Dashboard (React)
-↓
-Backend API (Node + Express)
-↓
-Database (MongoDB)
-↓
-WhatsApp Notification Service
+### Hybrid Rendering (ISR)
+
+Used for pages that should be mostly fresh but can tolerate short delays, such as news or queue updates.
+
+Implementation:
+```ts
+export const revalidate = 60;
+```
 
 ---
 
-## Development Progress
+## Next.js Rendering Strategies Demo
 
-### Day 1 - January 22, 2026
+This project demonstrates three rendering strategies using Next.js App Router:
 
-**LLD (Low Level Design) Architecture**
+### 1. Static Rendering
+- **Page:** `/static`
+- **Config:** `export const revalidate = false;`
+- **Why:** For content that rarely changes and does not require frequent updates. Fastest performance, lowest server cost, but data can become stale until the next build.
+- **Caching Impact:** Maximizes cache efficiency, ideal for marketing or info pages.
 
-Today we completed the Low Level Design architecture for our Digital Queue Management System. The design includes detailed flow diagrams for different user roles and system interactions.
+### 2. Dynamic Rendering
+- **Page:** `/dynamic`
+- **Config:** `export const dynamic = 'force-dynamic';` and `fetch(..., { cache: 'no-store' })`
+- **Why:** For content that must always be fresh (e.g., live queue status). Ensures up-to-date data but increases server load and cost.
+- **Caching Impact:** No caching, highest freshness, but less scalable for high traffic.
 
-#### Design Components:
+### 3. Hybrid Rendering (ISR)
+- **Page:** `/hybrid`
+- **Config:** `export const revalidate = 60;`
+- **Why:** For content that should be mostly fresh but can tolerate short delays (e.g., news, queue updates). Balances performance and freshness.
+- **Caching Impact:** Pages are cached and revalidated every 60 seconds, reducing server load while keeping data reasonably fresh.
 
-**1. Patient Flow**
-![Patient Flow](./public/LLD/Patient%20Flow.png)
+---
 
-**2. Receptionist Dashboard**
-![Receptionist Dashboard](./public/LLD/Receptionist%20Dashboard.png)
+## Engineering Decisions & Reflections
 
-**3. Staff/Doctor Dashboard**
-![Staff Doctor Dashboard](./public/LLD/Staff%20Doctor%20Dashboard.png)
+- **Static:** Chosen for pages with infrequent updates. If user base increases tenfold, static pages scale effortlessly with CDN caching.
+- **Dynamic:** Used for real-time data. With more users, server costs rise due to frequent computation and database hits.
+- **Hybrid:** Best for frequently updated but not real-time data. ISR reduces server load and cost, scales well, and keeps data fresh enough for most use cases.
 
-These designs showcase the complete user journey and interaction patterns for:
-- Patients receiving tokens and notifications
-- Receptionists managing token generation
-- Doctors/Staff managing the queue and calling next patients
+---
 
+## Case Study: News Portal Scenario
+
+- **Static Rendering:** News articles rendered statically can become stale if breaking news occurs. Users may see outdated headlines until the next build.
+- **Dynamic Rendering:** Always fresh, but expensive—every user triggers a new server request, increasing infrastructure cost.
+- **Balanced Solution:** Use ISR (`revalidate = 60` or lower) for news pages. Breaking news can be updated quickly, while most articles benefit from caching. For urgent updates, use dynamic rendering for specific endpoints.
+
+---
+
+## Video Explanation
+
+- See the video link for a walkthrough of each page, data fetching, and trade-offs.
+- Performance, cost, and scalability are discussed for each strategy.
+- Rendering choices for production systems are explained.
+
+---
+
+## Submission Checklist
+- [x] Static, dynamic, and hybrid pages implemented
+- [x] README updated with explanations and reflections
+- [ ] Pull request link added
+- [ ] Video link added
+
+---
