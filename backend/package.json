@@ -1,0 +1,22 @@
+{
+  "name": "hospital-queue-backend",
+  "version": "1.0.0",
+  "description": "Backend for lightweight digital queue management system for Tier-2/3 hospitals",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node src/index.js",
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "hospital",
+    "queue",
+    "management"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3"
+  }
+}
